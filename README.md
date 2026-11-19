@@ -1,80 +1,51 @@
-# NOAA US Weather Radar ⛈️
+# NOAA US Weather Radar (watchapp) ⛈️
 
-## What is this?
+A Pebble **watchapp** that fills the screen with a live NOAA weather radar map centered on your location, with button controls for zoom, radar mode, recentering and refresh. Forked from Leo Herzog's [NOAA US Weather Radar watchface](https://github.com/leoherzog/pebble-noaa-radar-watchface) and turned from a watchface into an app.
 
-Your watch can tell you it's raining. Wouldn't it be better if it showed you the *storm*? NOAA US Weather Radar is a watchface for [Pebble](https://repebble.com/) watches that fills the screen with a live weather radar map centered on your location — the same NOAA base reflectivity imagery you'd check on your phone, composited over a USGS topographic basemap, refreshed on an interval you choose (every 5 minutes to hourly, 10 by default), with your time, date, health stats, and weather drawn right on top.
+Your phone does the heavy lifting: it finds your location, fetches the NOAA base reflectivity layer and a USGS topographic basemap, blends them, squeezes the result down to a 16-color image, and streams it over Bluetooth. The watch just draws it.
 
-Your phone does the heavy lifting: it figures out where you are, fetches the map imagery and National Weather Service data, blends the radar into the basemap, squeezes the result down to something a tiny watch can decode, and streams it over Bluetooth. The watch just draws it.
+## Controls
 
-![Twelve scenes from NOAA US Weather Radar, captured on a Pebble Time 2: storms over Grand Rapids, Minneapolis, New Orleans, Oklahoma City, Dallas, Miami, Denver, Phoenix, Seattle, New York, Washington DC, and Honolulu](screenshots/gallery/contact-emery.png)
+| Button | Action |
+|--------|--------|
+| Up | Zoom in |
+| Down | Zoom out |
+| Select | Cycle radar mode: Translucent → Opaque → Off |
+| Hold Select | Recenter (takes a fresh GPS fix) |
+| Hold Up | Refresh now |
+| Hold Down | Hide or show the overlays (center marker and status line) |
+| Back | Exit |
 
-### Features
+Zoom steps across the screen width: 25, 50, 100, 150, 250 (default), 400, 600 and 1000 km. Zoom and radar mode are remembered between launches.
 
-- 🗺️ **Full-screen live radar** over a topographic basemap, with a marker at your exact position
-- 📍 **Follows you around** — the map re-centers when you move, or set a fixed location manually
-- 🔍 **Three zoom levels** — City (100 km), State (250 km), or Region (500 km) across the screen
-- 📝 **Four configurable text lines** — Time, Date, Weekday, Steps, Distance, Calories, Sleep, Heart Rate, Battery, Bluetooth, Radar Age, Lat/Long, and more, each with its own font size from Extra Small up to Super Large, fixed or "shrink to fit"
-- 🔠 **Follows your watch's Text Size** — if Text Size is set to Larger when the face first runs, the time starts at Super Large and, on Pebble Time 2 and Pebble Round 2, the date at Extra Large, both shrink-to-fit
-- 🖍️ **Custom text and outline colors** — every line is drawn with a halo outline so it stays readable over busy map areas, and both colors are yours to pick
-- 🌦️ **Weather from the National Weather Service** — current conditions, temperature, feels like, dew point, humidity, wind, pressure, today's forecast, tonight/tomorrow, high/low, and active alerts, in imperial or metric units
-- 🌅 **Sunrise/sunset and golden hour** — computed on your phone from your exact position rather than fetched, so they don't depend on a nearby weather station, and shown in your watch's own 12- or 24-hour format
-- ⚠️ **Alert-aware lines** — show your normal weather until an NWS alert takes over the line, or pick "Alerts, else Upcoming, else Conditions" to also count down to an alert that hasn't started yet. Alerts clear themselves when they expire, even if your phone is out of reach
-- 🗓️ **Severe alerts in your timeline** — tornado, severe thunderstorm, flash flood and other severe or extreme NWS alerts show up as timeline pins that run for as long as the alert does while this is your watchface, then quietly age out on their own. An alert longer than a day reads "All day" and is renewed each midnight. Open one and the card is yellow for a watch, red for a warning. Pins can take several minutes to arrive, so treat them as a record of what's in force, not as a siren
-- 🎨 **Translucent, opaque, or disabled radar** — or use it as a plain topo map face
-- 📶 **Bluetooth badge** — a Bluetooth rune appears in the top-left, or at the left edge of a round watch, the moment your phone goes out of range, so you know the radar has stopped updating
-- 🔋 **Frugal by design** — imagery is blended and re-encoded to 16 colors before it ever leaves the phone, a refresh that comes back looking identical isn't sent to the watch at all, and weather is only fetched if a weather line is actually configured (or timeline pins are on, which needs alerts either way)
+The status line at the bottom shows the zoom and how old the radar is (`250 km | 3 min`), or `Loading...` while a change is being fetched. A short message pops up in the middle when the zoom or mode changes. A crossed-out Bluetooth badge appears when the phone is out of reach.
 
-Radar, basemap, and weather data come from [NOAA](https://mapservices.weather.noaa.gov/), the [USGS National Map](https://basemap.nationalmap.gov/), and [api.weather.gov](https://www.weather.gov/documentation/services-web-api) — all free, no API keys. These services are US-only, so there's no imagery or weather outside the United States.
+## How it updates
 
-## Installation
+- The map refreshes once a minute while the app is open. If the radar hasn't changed, nothing is re-sent to the watch; the age just resets.
+- A zoom or radar-mode change fetches a new frame right away. Zoom changes throw away the cached basemap.
+- Nothing is saved for startup: the app opens grey and fills in when the first frame arrives (usually a few seconds).
+- The watch holds one image at a time.
 
-Install it from the [Pebble appstore](https://apps.repebble.com/2029ab9c84f946e1b125f8e0), or build it yourself with the [Pebble SDK](https://developer.rebble.io/developer.pebble.com/sdk/index.html):
+Radar and basemap data come from [NOAA](https://mapservices.weather.noaa.gov/) and the [USGS National Map](https://basemap.nationalmap.gov/), free and with no API keys. Both are US-only.
+
+## Building
 
 ```bash
-# Clone the repository
-git clone https://github.com/leoherzog/pebble-noaa-radar-watchface.git
-cd pebble-noaa-radar-watchface
-
-# Install the JS dependencies (bundled into the phone-side code)
 npm install
-
-# Build it
 pebble build
-
-# Install to your watch...
-pebble install --phone <phone-ip>
-
-# ...or try it in the emulator
-pebble install --emulator emery
+pebble install --phone <phone-ip>      # or: pebble install --emulator emery
 ```
 
 ## Requirements
 
-- A color Pebble: Pebble Time or Time Steel (`basalt`), Pebble Time Round (`chalk`), Pebble Time 2 (`emery`), or Pebble Round 2 (`gabbro`)
-- A location in the United States (that's where NOAA's radar coverage ends!)
-- The Pebble phone app, for location, networking, and settings (version 1.14.0.1 or newer for the yellow and red timeline cards)
+- A color Pebble: Pebble Time 2 (`emery`, the primary target), Pebble Time / Time Steel (`basalt`), Pebble Time Round (`chalk`) or Pebble Round 2 (`gabbro`)
+- A location in the United States
+- The Pebble phone app, for location and networking
 
-On the round watches, every text line fits itself to the width of the circle at its height, shortening its text (or shrinking it, on a shrink-to-fit line) rather than running under the bezel. Pebble Time Round has the least room at the very top and bottom of its screen, so there Top Line 1 and Bottom Line 2 go up to Small, and its settings page only offers the sizes that fit.
+## Settings
 
-## Configuration
-
-Open the watchface's settings in the Pebble phone app.
-
-| Setting | Description |
-|---------|-------------|
-| Radar | Translucent, Opaque, or Disabled |
-| Zoom | City (100 km), State (250 km), or Region (500 km) |
-| Refresh Interval | How often the radar, weather, and alerts refresh: 5, 10, 15, 20, 30, or 60 minutes (default 10) |
-| Use GPS | Follow the phone's location, or turn off to enter a fixed latitude/longitude |
-| Top/Bottom Lines 1 & 2 | What each of the four text lines shows |
-| Line Sizes | Extra Small through Super Large, fixed or shrink-to-fit (the two outer lines stop at Small on Pebble Time Round). A fresh install starts one size up, where it fits, when the watch's Text Size is Larger |
-| Text Color | Color of the four text lines (default black) |
-| Text Outline Color | Color of the halo drawn under the glyphs (default white) |
-| Bluetooth Disconnection Indicator | Show or hide the badge shown while the phone is out of range (default on) |
-| Units | Imperial (°F, mph, inHg) or Metric (°C, km/h, mb) |
-| Send Severe Weather Alerts to Timeline | Push severe and extreme NWS alerts into your Pebble timeline as pins (default on) |
-
-The two outer lines default to None, so out of the box you get a clean two-line face: time up top, date down below, radar behind. If your watch's Text Size is set to Larger when the face first runs, the face starts with larger text, and the settings page shows the sizes it picked. That choice is made once: changing Text Size later doesn't resize the face, so use Line Sizes for that. Text Size is in the watch's Settings under Display, or under Notifications on firmware older than PebbleOS 4.37.
+Open the app's settings in the Pebble phone app to choose between following the phone's GPS or a fixed latitude/longitude. Everything else is on the watch buttons.
 
 ## License
 

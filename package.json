@@ -1,7 +1,7 @@
 {
-  "name": "noaa-us-weather-radar",
+  "name": "noaa-us-weather-radar-app",
   "author": "Leo Herzog",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "keywords": [
     "pebble-app"
   ],
@@ -9,12 +9,11 @@
   "dependencies": {
     "@rebble/clay": "^1.0.10",
     "pako": "^1.0.11",
-    "suncalc": "^1.9.0",
     "upng-js": "^2.1.0"
   },
   "pebble": {
-    "displayName": "NOAA US Weather Radar",
-    "uuid": "6808fb9d-6728-4be3-8e2a-e65cba4e94c6",
+    "displayName": "NOAA Radar",
+    "uuid": "7d0cc50d-e4a0-4cb4-9ec6-1329216d8ea0",
     "sdkVersion": "3",
     "enableMultiJS": true,
     "targetPlatforms": [
@@ -24,12 +23,11 @@
       "chalk"
     ],
     "watchapp": {
-      "watchface": true
+      "watchface": false
     },
     "capabilities": [
       "location",
-      "configurable",
-      "health"
+      "configurable"
     ],
     "messageKeys": [
       "IMG_TOTAL",
@@ -37,40 +35,10 @@
       "IMG_DATA",
       "REQUEST_IMAGES",
       "RADAR_TIME",
-      "TopSlot",
-      "BottomSlot",
-      "Lat",
-      "Lon",
-      "TopFont",
-      "BottomFont",
-      "TopSlot1",
-      "TopFont1",
-      "BottomSlot2",
-      "BottomFont2",
-      "WX_COND",
-      "WX_FCST",
-      "WX_HILO",
-      "WX_ALERT",
-      "WX_ALERT2",
-      "WX_TEMP",
-      "WX_FEELS",
-      "WX_DEW",
-      "WX_HUM",
-      "WX_WIND",
-      "WX_PRES",
-      "WX_FCST2",
-      "WX_SUNRISE",
-      "WX_SUNSET",
-      "WX_GOLD1",
-      "WX_GOLD2",
-      "WX_EXP",
-      "WX_EXP2",
-      "WX_TIME",
-      "TextColor",
-      "OutlineColor",
-      "RefreshInterval",
-      "BtIndicator",
-      "REQUEST_FONTS"
+      "CMD",
+      "ZOOM_KM",
+      "RADAR_MODE",
+      "BUSY"
     ],
     "resources": {
       "media": [
