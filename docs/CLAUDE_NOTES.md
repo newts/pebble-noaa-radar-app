@@ -40,8 +40,8 @@ replacing it, display name "NOAA Radar", version 2.0.0. `health` capability and
 
 **Phone (`src/pkjs/index.js`, ~550 lines, was ~1870)**:
 - Owns zoom (`ZoomIdx` in localStorage, ladder 25/50/100/150/250/400/600/1000
-  km, default 250) and radar mode (`RadarMode`, cycle Translucent → Opaque →
-  Off). These are remembered as user choices, not cached imagery.
+  km, default 250) and radar mode (`RadarMode`, Select toggles Translucent ↔
+  Opaque; no Off). These are remembered as user choices, not cached imagery.
 - Basemap cache and transfer hash are in memory only. Zoom flushes both.
 - Passes: `startPass({user, fresh})`. User passes (buttons, launch) show
   Loading on the watch and report failures; heartbeats skip while a pass is
@@ -56,7 +56,7 @@ replacing it, display name "NOAA Radar", version 2.0.0. `health` capability and
 
 - Phone code exercised in Node with mocked Pebble, XHR, geolocation and
   localStorage: launch, heartbeat (unchanged and changed radar), debounced
-  zoom, zoom clamp, mode cycle incl. Off, recenter, refresh, manual location,
+  zoom, zoom clamp, mode toggle, recenter, refresh, manual location,
   NACK give-up.
 - `main.c` syntax-checked with gcc against a stub `pebble.h` for emery,
   basalt and a round build. **Not yet built with the real Pebble SDK or run on
@@ -64,7 +64,7 @@ replacing it, display name "NOAA Radar", version 2.0.0. `health` capability and
 
 ## Still open
 
-- Panning (no pan exists, so Recenter = fresh GPS fix).
+- Panning: not wanted (decided 2026-11-18). Recenter = fresh GPS fix.
 - Whether to restore severe-alert timeline pins (removed; in app form they
   would only update while the app is open).
 - `screenshots/` tooling and `STORE.md` still describe the watchface.

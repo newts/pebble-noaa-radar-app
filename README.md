@@ -10,7 +10,7 @@ Your phone does the heavy lifting: it finds your location, fetches the NOAA base
 |--------|--------|
 | Up | Zoom in |
 | Down | Zoom out |
-| Select | Cycle radar mode: Translucent → Opaque → Off |
+| Select | Switch radar between Translucent and Opaque |
 | Hold Select | Recenter (takes a fresh GPS fix) |
 | Hold Up | Refresh now |
 | Hold Down | Hide or show the overlays (center marker and status line) |

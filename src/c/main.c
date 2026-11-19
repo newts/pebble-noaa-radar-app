@@ -11,7 +11,7 @@
  *
  *   Up            zoom in            Long Up      refresh now
  *   Down          zoom out           Long Down    toggle overlays
- *   Select        cycle radar mode   Long Select  recenter (fresh GPS fix)
+ *   Select        radar mode toggle  Long Select  recenter (fresh GPS fix)
  *   Back          exit
  *
  * Nothing is persisted: the app starts grey and fills in when the first frame
@@ -31,7 +31,7 @@ enum {
 };
 
 // ---- Radar modes (RADAR_MODE key) ------------------------------------------
-enum { MODE_OFF = 0, MODE_TRANSLUCENT = 1, MODE_OPAQUE = 2 };
+enum { MODE_TRANSLUCENT = 1, MODE_OPAQUE = 2 };
 
 // ---- BUSY key values -------------------------------------------------------
 enum { BUSY_IDLE = 0, BUSY_WORKING = 1, BUSY_FAILED = 2 };
@@ -91,7 +91,6 @@ static void redraw(void) {
 
 static const char *mode_name(int mode) {
   switch (mode) {
-    case MODE_OFF:         return "Radar off";
     case MODE_TRANSLUCENT: return "Translucent";
     case MODE_OPAQUE:      return "Opaque";
     default:               return "";
@@ -504,9 +503,7 @@ static void format_status(char *buf, size_t size) {
     return;
   }
   char age[16];
-  if (s_radar_mode == MODE_OFF) {
-    snprintf(age, sizeof(age), "radar off");
-  } else if (!s_radar_time) {
+  if (!s_radar_time) {
     snprintf(age, sizeof(age), "--");
   } else {
     // The phone's clock dates the radar, so clamp a small skew rather than

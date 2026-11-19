@@ -38,13 +38,9 @@ var ZOOM_KM = [25, 50, 100, 150, 250, 400, 600, 1000];
 var DEFAULT_ZOOM = 4;               // 250 km, the watchface's old "State"
 
 // Radar modes, as composite.buildComposite and the watch number them.
-var MODE_OFF = 0, MODE_TRANSLUCENT = 1, MODE_OPAQUE = 2;
+// composite.js also supports 0 (radar disabled), which the app does not use.
+var MODE_TRANSLUCENT = 1, MODE_OPAQUE = 2;
 var DEFAULT_MODE = MODE_TRANSLUCENT;
-// Select cycles Translucent -> Opaque -> Off -> Translucent.
-var MODE_NEXT = {};
-MODE_NEXT[MODE_TRANSLUCENT] = MODE_OPAQUE;
-MODE_NEXT[MODE_OPAQUE] = MODE_OFF;
-MODE_NEXT[MODE_OFF] = MODE_TRANSLUCENT;
 
 // Watch commands; must match the CMD_* enum in main.c.
 var CMD_ZOOM_IN = 1, CMD_ZOOM_OUT = 2, CMD_MODE = 3,
@@ -62,7 +58,8 @@ function intSetting(key, lo, hi, def) {
   return (isNaN(v) || v < lo || v > hi) ? def : v;
 }
 function zoomIdx()   { return intSetting('ZoomIdx', 0, ZOOM_KM.length - 1, DEFAULT_ZOOM); }
-function radarMode() { return intSetting('RadarMode', 0, 2, DEFAULT_MODE); }
+// A stored 0 (Off, from an earlier build) falls back to the default.
+function radarMode() { return intSetting('RadarMode', 1, 2, DEFAULT_MODE); }
 
 // ---------------------------------------------------------------------------
 // Display size
@@ -370,7 +367,7 @@ function render(rawLat, rawLon, g, finish) {
   var bbox = [cx - W / 2, cy - H / 2, cx + W / 2, cy + H / 2].join(',');
   var key = IMG_W + 'x' + IMG_H + '_' + zoom + '_' + lat.toFixed(2) + '_' + lon.toFixed(2);
 
-  var want = (mode === MODE_OFF) ? 1 : 2;
+  var want = 2;
   var got = 0, bm = null, rd = null, failed = false;
 
   function part(which, rgba) {
@@ -397,11 +394,9 @@ function render(rawLat, rawLon, g, finish) {
       part(0, rgba);
     });
   }
-  if (mode !== MODE_OFF) {
-    fetchLayer(exportUrl(RADAR_URL, bbox, true), function (rgba) {
-      part(1, rgba);
-    });
-  }
+  fetchLayer(exportUrl(RADAR_URL, bbox, true), function (rgba) {
+    part(1, rgba);
+  });
 }
 
 function composeAndSend(bm, rd, mode) {
@@ -414,7 +409,7 @@ function composeAndSend(bm, rd, mode) {
     return;
   }
   var h = composite.hashBytes(r.bytes);
-  var stamp = (mode === MODE_OFF) ? 0 : Math.floor(Date.now() / 1000);
+  var stamp = Math.floor(Date.now() / 1000);
   console.log('Composite ' + r.bytes.length + ' B, ' + r.colors +
               ' colors -> ' + r.folded + ', hash ' + h);
   if (h === txHash) {
@@ -465,7 +460,9 @@ function changeZoom(delta) {
 }
 
 function cycleMode() {
-  localStorage.setItem('RadarMode', String(MODE_NEXT[radarMode()]));
+  // Select toggles Translucent <-> Opaque.
+  var next = (radarMode() === MODE_OPAQUE) ? MODE_TRANSLUCENT : MODE_OPAQUE;
+  localStorage.setItem('RadarMode', String(next));
   txHash = null;          // the blend changes even where the view did not
   startPass({ user: true });
 }

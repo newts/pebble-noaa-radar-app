@@ -14,8 +14,8 @@ module.exports = [
   {
     "type": "text",
     "defaultValue":
-      "On the watch: <b>Up</b>/<b>Down</b> zoom, <b>Select</b> cycles the radar " +
-      "(Translucent, Opaque, Off). Hold <b>Select</b> to recenter, hold <b>Up</b> " +
+      "On the watch: <b>Up</b>/<b>Down</b> zoom, <b>Select</b> switches the radar " +
+      "between Translucent and Opaque. Hold <b>Select</b> to recenter, hold <b>Up</b> " +
       "to refresh, hold <b>Down</b> to hide or show the overlays."
   },
   {
