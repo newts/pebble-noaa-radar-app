@@ -1,6 +1,6 @@
-# NOAA US Weather Radar (watchapp) ⛈️
+# NOAA Radar Zoom ⛈️
 
-A Pebble **watchapp** that fills the screen with a live NOAA weather radar map centered on your location, with button controls for zoom, radar mode, recentering and refresh. Forked from Leo Herzog's [NOAA US Weather Radar watchface](https://github.com/leoherzog/pebble-noaa-radar-watchface) and turned from a watchface into an app.
+**NOAA Radar Zoom** is a Pebble watchapp that fills the screen with a live NOAA weather radar map centered on your location, with button controls for zoom, radar mode, recentering and refresh. Forked from Leo Herzog's [NOAA US Weather Radar watchface](https://github.com/leoherzog/pebble-noaa-radar-watchface) and turned from a watchface into an app.
 
 Your phone does the heavy lifting: it finds your location, fetches the NOAA base reflectivity layer and a USGS topographic basemap, blends them, squeezes the result down to a 16-color image, and streams it over Bluetooth. The watch just draws it.
 
@@ -51,7 +51,8 @@ Open the app's settings in the Pebble phone app to choose between following the 
 
 The MIT License (MIT)
 
-Copyright © 2026 Leo Herzog
+Copyright © 2026 Leo Herzog (original watchface)
+Copyright © 2026 newts (watchapp conversion)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -59,56 +60,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-## About Me
+## Credits
 
-<a href="https://herzog.tech/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://herzog.tech/signature/link-light.svg.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://herzog.tech/signature/link.svg.png">
-    <img src="https://herzog.tech/signature/link.svg.png" width="32px">
-  </picture>
-</a>
-<a href="https://mastodon.social/@herzog" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://herzog.tech/signature/mastodon-light.svg.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://herzog.tech/signature/mastodon.svg.png">
-    <img src="https://herzog.tech/signature/mastodon.svg.png" width="32px">
-  </picture>
-</a>
-<a href="https://github.com/leoherzog" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://herzog.tech/signature/github-light.svg.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://herzog.tech/signature/github.svg.png">
-    <img src="https://herzog.tech/signature/github.svg.png" width="32px">
-  </picture>
-</a>
-<a href="https://keybase.io/leoherzog" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://herzog.tech/signature/keybase-light.svg.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://herzog.tech/signature/keybase.svg.png">
-    <img src="https://herzog.tech/signature/keybase.svg.png" width="32px">
-  </picture>
-</a>
-<a href="https://www.linkedin.com/in/leoherzog" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://herzog.tech/signature/linkedin-light.svg.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://herzog.tech/signature/linkedin.svg.png">
-    <img src="https://herzog.tech/signature/linkedin.svg.png" width="32px">
-  </picture>
-</a>
-<a href="https://hope.edu/directory/people/herzog-leo/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://herzog.tech/signature/anchor-light.svg.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://herzog.tech/signature/anchor.svg.png">
-    <img src="https://herzog.tech/signature/anchor.svg.png" width="32px">
-  </picture>
-</a>
-<br />
-<a href="https://herzog.tech/$" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://herzog.tech/signature/mug-tea-saucer-solid-light.svg.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://herzog.tech/signature/mug-tea-saucer-solid.svg.png">
-    <img src="https://herzog.tech/signature/mug-tea-saucer-solid.svg.png" alt="Buy Me A Tea" width="32px">
-  </picture>
-  Found this helpful? Buy me a tea!
-</a>
+Based on [NOAA US Weather Radar](https://github.com/leoherzog/pebble-noaa-radar-watchface) by [Leo Herzog](https://herzog.tech/), whose phone-side imagery pipeline (fetch, blend, 16-color PNG encoder and chunked transfer) this app still runs on.

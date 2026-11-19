@@ -22,7 +22,7 @@ Agreed earlier (2026-11-18):
 
 **Build (`package.json`)**: `watchface: false`, new UUID
 (`7d0cc50d-…`) so it installs alongside the original face instead of
-replacing it, display name "NOAA Radar", version 2.0.0. `health` capability and
+replacing it, display name "NOAA Radar Zoom", author `newts`, version 2.0.0. `health` capability and
 `suncalc` dependency dropped. Message keys reduced to the image transfer plus
 `CMD`, `ZOOM_KM`, `RADAR_MODE`, `BUSY`.
 
@@ -67,4 +67,7 @@ replacing it, display name "NOAA Radar", version 2.0.0. `health` capability and
 - Panning: not wanted (decided 2026-11-18). Recenter = fresh GPS fix.
 - Whether to restore severe-alert timeline pins (removed; in app form they
   would only update while the app is open).
-- `screenshots/` tooling and `STORE.md` still describe the watchface.
+- `STORE.md` rewritten for the app. Store screenshots and banners in
+  `screenshots/store/` and `screenshots/banner/` are still watchface images and
+  must be recaptured before publishing; the capture tooling is watchface-era.
+- Support email for the store listing not chosen yet.

@@ -1,6 +1,6 @@
 {
   "name": "noaa-us-weather-radar-app",
-  "author": "Leo Herzog",
+  "author": "newts",
   "version": "2.0.0",
   "keywords": [
     "pebble-app"
@@ -12,7 +12,7 @@
     "upng-js": "^2.1.0"
   },
   "pebble": {
-    "displayName": "NOAA Radar",
+    "displayName": "NOAA Radar Zoom",
     "uuid": "7d0cc50d-e4a0-4cb4-9ec6-1329216d8ea0",
     "sdkVersion": "3",
     "enableMultiJS": true,

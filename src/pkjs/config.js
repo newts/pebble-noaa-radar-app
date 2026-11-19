@@ -9,7 +9,7 @@ module.exports = [
   {
     "type": "heading",
     "size": 3,
-    "defaultValue": "NOAA US Weather Radar"
+    "defaultValue": "NOAA Radar Zoom"
   },
   {
     "type": "text",
