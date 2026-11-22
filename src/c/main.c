@@ -14,6 +14,9 @@
  *   Select        radar mode toggle  Long Select  recenter (fresh GPS fix)
  *   Back          exit
  *
+ * The backlight stays on for 30 s after launch and after every button press,
+ * longer than the system's glance timeout, so the map can be studied.
+ *
  * Nothing is persisted: the app starts grey and fills in when the first frame
  * arrives. The frame refreshes once a minute while the app is open.
  */
@@ -51,6 +54,11 @@ enum { BUSY_IDLE = 0, BUSY_WORKING = 1, BUSY_FAILED = 2 };
 #define BUSY_TIMEOUT_MS   45000   // give up on a phone that never answers
 #define CMD_RETRY_MS      150     // outbox busy: try the command again
 #define CMD_MAX_RETRIES   10
+// The SDK has no per-app backlight timeout, so the app forces the light on
+// with light_enable(true) and hands it back to the system with
+// light_enable(false) when this timer runs out. Forced on means on even in
+// daylight, where the system would leave it off: the cost is battery.
+#define BACKLIGHT_HOLD_MS 30000
 
 // ==== Global state ==========================================================
 
@@ -80,6 +88,8 @@ static AppTimer *s_toast_timer;
 static uint8_t   s_pending_cmd;
 static int       s_cmd_retries;
 static AppTimer *s_cmd_timer;
+
+static AppTimer *s_light_timer;     // returns the backlight to the system
 
 // ==== Helpers ===============================================================
 
@@ -134,6 +144,23 @@ static void set_busy(bool busy) {
   redraw();
 }
 
+// ==== Backlight =============================================================
+
+static void backlight_release(void *ctx) {
+  s_light_timer = NULL;
+  light_enable(false);   // back to the system's own timeout and ambient rules
+}
+
+// Light on now, and off BACKLIGHT_HOLD_MS after the latest call.
+static void backlight_hold(void) {
+  light_enable(true);
+  if (s_light_timer) {
+    app_timer_reschedule(s_light_timer, BACKLIGHT_HOLD_MS);
+  } else {
+    s_light_timer = app_timer_register(BACKLIGHT_HOLD_MS, backlight_release, NULL);
+  }
+}
+
 // ==== Messages to the phone =================================================
 
 // The heartbeat. 2 = the watch holds no frame (the phone must not skip an
@@ -174,6 +201,7 @@ static void cmd_retry(void *ctx) {
 // Sends a command, retrying briefly while the outbox is busy (a heartbeat or
 // an earlier command still in flight). A newer command replaces a pending one.
 static void send_cmd(uint8_t cmd) {
+  backlight_hold();      // every press that reaches here restarts the 30 s
   if (!connection_service_peek_pebble_app_connection()) {
     show_toast("No phone");
     return;
@@ -217,6 +245,7 @@ static void up_long(ClickRecognizerRef r, void *ctx) {
 }
 
 static void down_long(ClickRecognizerRef r, void *ctx) {
+  backlight_hold();
   long_press_buzz();
   s_overlays = !s_overlays;
   show_toast(s_overlays ? "Overlays on" : "Overlays off");
@@ -628,9 +657,15 @@ static void init(void) {
   // fetch and clears it when the frame lands. The timeout covers a phone that
   // never connects.
   set_busy(true);
+  backlight_hold();
 }
 
 static void deinit(void) {
+  if (s_light_timer) {
+    app_timer_cancel(s_light_timer);
+    s_light_timer = NULL;
+  }
+  light_enable(false);   // never leave the light forced on after exit
   tick_timer_service_unsubscribe();
   connection_service_unsubscribe();
   window_destroy(s_window);

@@ -34,6 +34,8 @@ replacing it, display name "NOAA Radar Zoom", author `newts`, version 2.0.0. `he
 - Commands retry for ~1.5 s if the outbox is busy; "No phone", "Phone busy",
   "Not sent", "No response" (45 s timeout) and "Update failed" toasts cover
   failures.
+- Backlight: forced on (`light_enable(true)`) for 30 s from launch and from
+  every button press, then handed back to the system; released on exit.
 - Minute tick sends `REQUEST_IMAGES` (2 = no frame held, 1 = frame held).
 - Removed: text slots, fonts, weather, health, settings struct, all persist
   code (settings and cached composite).

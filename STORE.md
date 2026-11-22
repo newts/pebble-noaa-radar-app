@@ -44,6 +44,7 @@ app is open.
 - Full-screen live radar over a topographic basemap, with a marker at your position
 - Eight zoom steps: 25, 50, 100, 150, 250, 400, 600 and 1000 km
 - A status line with the zoom and how old the radar is
+- The backlight stays on for 30 seconds after each button press, long enough to read the map
 - Follows your phone's GPS, or pin it to a fixed latitude and longitude in settings
 - Remembers your zoom and radar mode for next time
 - A Bluetooth badge appears when your phone is out of range, so you know the map has stopped updating

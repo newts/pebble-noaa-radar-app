@@ -20,6 +20,8 @@ Zoom steps across the screen width: 25, 50, 100, 150, 250 (default), 400, 600 an
 
 The status line at the bottom shows the zoom and how old the radar is (`250 km | 3 min`), or `Loading...` while a change is being fetched. A short message pops up in the middle when the zoom or mode changes. A crossed-out Bluetooth badge appears when the phone is out of reach.
 
+The backlight stays on for 30 seconds after the app opens and after every button press, so the map can be studied longer than the watch's normal glance timeout. After that the watch's own backlight setting takes over again.
+
 ## How it updates
 
 - The map refreshes once a minute while the app is open. If the radar hasn't changed, nothing is re-sent to the watch; the age just resets.
