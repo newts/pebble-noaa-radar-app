@@ -1,5 +1,11 @@
 # Gallery screenshots
 
+> **Watchface-era.** Everything in `screenshots/` (gallery, store screenshots,
+> banners) and the tooling in `screenshots/tools/` was made for the original
+> watchface, with text lines over the map. The watchapp needs new store
+> screenshots; the simplest source is the CloudPebble emulator. The icons in
+> `screenshots/icon/` still fit.
+
 How `screenshots/gallery/` is produced, and why each tile is what it is.
 
 Twelve scenarios × four platforms (emery, basalt, gabbro, chalk) = 48 tiles,
